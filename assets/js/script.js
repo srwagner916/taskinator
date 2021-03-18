@@ -90,16 +90,33 @@ var createTaskEl = function(taskDataObj) {
   var taskActionsEl = createTaskActions(taskIdCounter);
   listItemEl.appendChild(taskActionsEl);
 
-  // add entire list item to list
-  tasksToDoEl.appendChild(listItemEl);
-  // add task id to taskDataObj
-  taskDataObj.id = taskIdCounter;
+  switch (taskDataObj.status) {
+    case "to do":
+      taskActionsEl.querySelector("select[name='status-change']").selectedIndex = 0;
+      tasksToDoEl.append(listItemEl);
+      break;
+    case "in progress":
+      taskActionsEl.querySelector("select[name='status-change']").selectedIndex = 1;
+      tasksInProgressEl.append(listItemEl);
+      break;
+    case "completed":
+      taskActionsEl.querySelector("select[name='status-change']").selectedIndex = 2;
+      tasksCompletedEl.append(listItemEl);
+      break;
+    default:
+      console.log("something wnet wrong!");
+  }
+
+  // save task as an object with name, type, status and id properties then push it into tasks array
+  taskDataObj.id - taskIdCounter;
+
   tasks.push(taskDataObj);
+
+  //save tasks to localStorage
+  saveTasks();
+
   // increase task counter for next unique id
   taskIdCounter++;
-
-  //save tasks
-  saveTasks();
 };
 
 var createTaskActions = function(taskId) {
